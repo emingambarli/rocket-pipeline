@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms10-security
+  namespace: msten-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ms10-security
+  template:
+    metadata:
+      labels:
+        app: ms10-security
+    spec:
+      containers:
+        - name: ms10-security-container
+          image: image:tag
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms10-security-svc
+  namespace: msten-prod
+spec:
+  selector:
+    app: ms10-security
+  ports:
+    - protocol: TCP
+      port: 5784
+      targetPort: 8080
+  type: ClusterIP
