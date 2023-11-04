@@ -8,7 +8,7 @@ stages:
 
 build:
   stage: build
-  image: $REGISTRY_HOST/gradle:jdk11-alpine
+  image: gradle:jdk11-alpine
   script:
     - gradle -DskipTests build
   artifacts:
@@ -19,7 +19,7 @@ build:
       
 dockerize:
   stage: dockerize
-  image: $REGISTRY_HOST/docker:dind
+  image: docker:dind
   script:
     - cp /builds/$CI_PROJECT_PATH/build/libs/*.jar ./
     - docker build -t $REGISTRY_HOST/mstensec:$CI_PIPELINE_ID .
@@ -30,7 +30,7 @@ dockerize:
 
 deploy:
   stage: deploy
-  image: $REGISTRY_HOST/docker:dind
+  image: docker:dind
   script:
     - apk update
     - 'which ssh-agent || ( apk add openssh-client )'
