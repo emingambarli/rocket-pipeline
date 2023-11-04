@@ -14,7 +14,8 @@ build:
   artifacts:
     paths:
       - build/libs/*.jar
-  only: main
+  only: 
+    - main
       
 dockerize:
   stage: dockerize
@@ -24,7 +25,8 @@ dockerize:
     - docker build -t $REGISTRY_HOST/mstendemo:$CI_PIPELINE_ID .
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $REGISTRY_HOST
     - docker push $REGISTRY_HOST/mstendemo:$CI_PIPELINE_ID
-  only: main
+  only: 
+    - main
 
 deploy:
   stage: deploy
@@ -40,4 +42,5 @@ deploy:
     - ls -la
     - scp ./* $KUBEMASTER:$DFPATH
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
-  only: main
+  only: 
+    - main
