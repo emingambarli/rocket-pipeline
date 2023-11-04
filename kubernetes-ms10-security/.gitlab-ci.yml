@@ -36,7 +36,7 @@ deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - sed -i "s|image: \"image:tag\"|image: \"$REGISTRY_HOST/mstensec:$CI_PIPELINE_ID\"|g" deployment.yaml
+    - 'sed -i "s|image: \"image:tag\"|image: \"$REGISTRY_HOST/mstensec:$CI_PIPELINE_ID\"|g" deployment.yaml'
     - ls -la
     - scp ./* $KUBEMASTER:$DFPATH
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
