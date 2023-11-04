@@ -1,0 +1,40 @@
+variables:
+  DOCKER_HOST: tcp://$DOCKER_HOST/
+
+stages:
+  - build
+  - dockerize
+  - deploy
+
+build:
+  stage: build
+  image: $REGISTRY_HOST/gradle:jdk11-alpine
+  script:
+    - gradle -DskipTests build
+  artifacts:
+    paths:
+      - build/libs/*.jar
+      
+dockerize:
+  stage: dockerize
+  image: $REGISTRY_HOST/docker:dind
+  script:
+    - cp /builds/$CI_PROJECT_PATH/build/libs/*.jar ./
+    - docker build -t $REGISTRY_HOST/rentcarbackend:$CI_PIPELINE_ID .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $REGISTRY_HOST
+    - docker push $REGISTRY_HOST/rentcarbackend:$CI_PIPELINE_ID
+
+deploy:
+  stage: deploy
+  image: $REGISTRY_HOST/docker:dind
+  script:
+    - apk update
+    - 'which ssh-agent || ( apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - sed -i "s|image: \"image:tag\"|image: \"$REGISTRY_HOST/rentcarbackend:$CI_PIPELINE_ID\"|" deployment.yaml
+    - ls -la
+    - scp ./* $KUBEMASTER:$DFPATH
+    - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
