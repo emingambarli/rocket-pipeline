@@ -7,30 +7,48 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: ms10-security
+      app: ms10
   template:
     metadata:
       labels:
-        app: ms10-security
+        app: ms10
     spec:
       containers:
         - name: ms10-security-container
-          image: image:tag
+          image: emn503/ms10-security:arm
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-      restartPolicy: Always
+          env:
+            - name: DB_CONNECTION_IP
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_CONNECTION_IP
+            - name: DB_CONNECTION_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_CONNECTION_USERNAME
+            - name: DB_CONNECTION_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_CONNECTION_PASSWORD\
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ms10-security-svc
   namespace: msten-prod
+  labels:
+    app: ms10
 spec:
   selector:
-    app: ms10-security
+    app: ms10
   ports:
     - protocol: TCP
-      port: 5784
+      port: 8080
+      name: http
       targetPort: 8080
   type: ClusterIP
