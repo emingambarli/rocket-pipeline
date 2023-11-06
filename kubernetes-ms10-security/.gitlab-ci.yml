@@ -10,7 +10,7 @@ build:
   stage: build
   image: gradle:jdk11-alpine
   script:
-    - gradle -DskipTests build
+    - gradle build -x test
   artifacts:
     paths:
       - build/libs/*.jar
