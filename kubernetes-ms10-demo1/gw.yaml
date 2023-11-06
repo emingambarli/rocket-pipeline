@@ -1,8 +1,8 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: ms10demo1-gateway
-  namespace: msten-prod
+  name: ms10demo-gateway
+  namespace: msten-demo
 spec:
   selector:
     istio: ingressgateway
