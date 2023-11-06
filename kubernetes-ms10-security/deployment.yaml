@@ -21,10 +21,7 @@ spec:
             - containerPort: 8080
           env:
             - name: DB_CONNECTION_IP
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_CONNECTION_IP
+              value: mysql-service
             - name: DB_CONNECTION_PASSWORD
               valueFrom:
                 secretKeyRef:
