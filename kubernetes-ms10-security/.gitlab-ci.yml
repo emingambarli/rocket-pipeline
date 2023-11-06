@@ -22,9 +22,9 @@ dockerize:
   image: docker:dind
   script:
     - cp /builds/$CI_PROJECT_PATH/build/libs/*.jar ./
-    - docker build -t $REGISTRY_HOST/mstensec:$CI_PIPELINE_ID .
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $REGISTRY_HOST
-    - docker push $REGISTRY_HOST/mstensec:$CI_PIPELINE_ID
+    - docker build -t $CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker push $CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID
   only: 
     - main
 
@@ -38,7 +38,7 @@ deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - 'sed -i "s|image: \"image:tag\"|image: \"$REGISTRY_HOST/mstensec:$CI_PIPELINE_ID\"|g" deployment.yaml'
+    - 'sed -i "s|image: \"image:tag\"|image: \"$CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID\"|g" deployment.yaml'
     - ls -la
     - scp ./* $KUBEMASTER:$DFPATH
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
