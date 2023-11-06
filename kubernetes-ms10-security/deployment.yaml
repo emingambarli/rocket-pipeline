@@ -62,3 +62,16 @@ spec:
     route:
       - destination:
           host: ms10-security-svc
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ms10-security-virtualservice
+  namespace: msten-sec
+spec:
+  hosts:
+    - ms10-security
+  http:
+    - route:
+        - destination:
+            host: mysql-service
