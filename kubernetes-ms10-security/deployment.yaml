@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ms10-security-container
-          image: emn503/ms10-security:arm
+          image: image:tag
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
