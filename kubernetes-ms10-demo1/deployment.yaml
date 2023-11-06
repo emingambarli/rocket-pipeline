@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ms10-demo1-container
-          image: emn503/ms10-demo1:arm
+          image: image:tag
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
