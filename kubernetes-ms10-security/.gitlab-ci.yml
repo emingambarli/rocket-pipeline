@@ -34,7 +34,7 @@ deploy:
   script:
     - apk update
     - apk add git
-    - git clone http://gitlab.emn.com/msten/deployment.git
+    - git clone http://$GITUSER:GITPASS@gitlab.emn.com/msten/deployment.git
     - cd deployment
     - 'which ssh-agent || ( apk add openssh-client )'
     - eval $(ssh-agent -s)
