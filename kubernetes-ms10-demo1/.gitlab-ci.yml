@@ -15,7 +15,7 @@ build:
     paths:
       - build/libs/*.jar
   only: 
-    - main
+    - master
       
 dockerize:
   stage: dockerize
@@ -26,7 +26,7 @@ dockerize:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker push $CI_REGISTRY_USER/mstendemo:$CI_PIPELINE_ID
   only: 
-    - main
+    - master
 
 deploy:
   stage: deploy
@@ -44,4 +44,4 @@ deploy:
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
     - ssh $KUBEMASTER kubectl set image deployment/ms10-demo1 -n msten-demo ms10-demo1-container=$CI_REGISTRY_USER/mstendemo:$CI_PIPELINE_ID
   only: 
-    - main
+    - master
