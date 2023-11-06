@@ -41,10 +41,7 @@ deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - 'sed -i "s|image: \"image:tag\"|image: \"$CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID\"|g" kubernetes-ms10-security/deployment.yaml'
-    - cat kubernetes-ms10-security/deployment.yaml
-    - ls -la
-    - scp kubernetes-ms10-security/deployment.yaml $KUBEMASTER:$DFPATH
+    - ssh $KUBEMASTER kubectl set image deployment/ms10-security ms10-security-container=$CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
   only: 
     - main
