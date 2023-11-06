@@ -42,6 +42,6 @@ deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
-    - ssh $KUBEMASTER kubectl set image deployment/ms10-security ms10-security-container=$CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID
+    - ssh $KUBEMASTER kubectl set image deployment/ms10-security -n msten-sec ms10-security-container=$CI_REGISTRY_USER/mstensec:$CI_PIPELINE_ID
   only: 
     - main
