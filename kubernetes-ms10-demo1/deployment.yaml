@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ms10-demo1-container
-          image: image:tag
+          image: emn503/ms10-demo1:arm
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -26,11 +26,32 @@ kind: Service
 metadata:
   name: ms10-demo1-svc
   namespace: msten-prod
+  labels:
+    app: ms10
 spec:
   selector:
     app: ms10
   ports:
     - protocol: TCP
-      port: 5546
+      port: 8080
+      name: http
       targetPort: 8080
   type: ClusterIP
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: virtualservice-ingress-msten-demoone
+  namespace: msten-prod
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - ms10demo1-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+      - destination:
+          host: ms10-demo1-svc
