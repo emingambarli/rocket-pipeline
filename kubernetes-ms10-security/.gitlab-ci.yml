@@ -1,3 +1,6 @@
+variables:
+  DOCKER_HOST: tcp://$DOCKER_HOST/
+
 stages:
   - build
   - dockerize
