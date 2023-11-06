@@ -47,7 +47,7 @@ spec:
   hosts:
   - "*"
   gateways:
-  - ms10demo1-gateway
+  - ms10demo-gateway
   http:
   - match:
     - uri:
