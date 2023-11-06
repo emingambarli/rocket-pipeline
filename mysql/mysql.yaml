@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-deployment
-  namespace: msten-prod
+  namespace: msten-sec
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: mysql
@@ -42,7 +42,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
-  namespace: msten-prod
+  namespace: msten-sec
 spec:
   selector:
     app: mysql
