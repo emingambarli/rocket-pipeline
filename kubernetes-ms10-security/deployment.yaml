@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ms10-security
-  namespace: msten-prod
+  namespace: msten-sec
 spec:
   replicas: 2
   selector:
@@ -35,7 +35,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ms10-security-svc
-  namespace: msten-prod
+  namespace: msten-sec
   labels:
     app: ms10
 spec:
@@ -52,12 +52,12 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: virtualservice-ingress-msten-security
-  namespace: msten-prod
+  namespace: msten-sec
 spec:
   hosts:
   - "*"
   gateways:
-  - ms10demo1-gateway
+  - ms10sec-gateway
   http:
   - match:
     - uri:
