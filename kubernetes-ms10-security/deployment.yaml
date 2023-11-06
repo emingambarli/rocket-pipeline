@@ -25,16 +25,11 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: DB_CONNECTION_IP
-            - name: DB_CONNECTION_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_CONNECTION_USERNAME
             - name: DB_CONNECTION_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-secret
-                  key: DB_CONNECTION_PASSWORD\
+                  key: DB_CONNECTION_PASSWORD
 ---
 apiVersion: v1
 kind: Service
