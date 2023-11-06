@@ -23,7 +23,7 @@ dockerize:
   script:
     - cp /builds/$CI_PROJECT_PATH/build/libs/*.jar ./
     - docker build -t $CI_REGISTRY_USER/mstendemo:$CI_PIPELINE_ID .
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $REGISTRY_HOST
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker push $CI_REGISTRY_USER/mstendemo:$CI_PIPELINE_ID
   only: 
     - main
