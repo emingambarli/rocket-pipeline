@@ -28,7 +28,6 @@ metadata:
   namespace: msten-demo
   labels:
     app: ms10
-    statefulset.kubernetes.io/pod-name: ms10-demo1
 spec:
   selector:
     app: ms10
