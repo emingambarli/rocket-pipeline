@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  ms10-demo1:
+    build:
+      context: ../ms10-demo1
+    image: ms10-demo1:arm
+  ms10-security:
+    build:
+      context: ../ms10-security
+    image: ms10-security:arm
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+    environment:
+      - DB_CONNECTION_IP=mysqldb
+      - DB_CONNECTION_USERNAME=superadmin
+      - DB_CONNECTION_PASSWORD=QWERTYUIOPqwertyuiop
+  mysqldb:
+    image: mysql:8
+    restart: always
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ertyuiop
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db:/var/lib/mysql
+    ports:
+      - 3476:3306
+  reverse-proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - ms10-security
+      - ms10-demo1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+volumes:
+  db: {}
