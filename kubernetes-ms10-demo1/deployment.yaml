@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: ms10
+        statefulset.kubernetes.io/pod-name: ms10-demo1
     spec:
       containers:
         - name: ms10-demo1-container
