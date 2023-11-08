@@ -41,6 +41,7 @@ deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh $KUBEMASTER cd $DFPATH && git pull
     - ssh $KUBEMASTER kubectl apply -f $DFPATH/deployment.yaml
     - ssh $KUBEMASTER kubectl set image deployment/ms10-demo1 -n msten-demo ms10-demo1-container=$CI_REGISTRY_USER/mstendemo:$CI_PIPELINE_ID
   only: 
