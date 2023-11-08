@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: ms10
+        statefulset.kubernetes.io/pod-name: ms10-security
     spec:
       containers:
         - name: ms10-security-container
@@ -35,6 +36,7 @@ metadata:
   namespace: msten-sec
   labels:
     app: ms10
+    statefulset.kubernetes.io/pod-name: ms10-security
 spec:
   selector:
     app: ms10
