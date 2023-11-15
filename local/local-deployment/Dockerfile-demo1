@@ -1,0 +1,10 @@
+FROM gradle as build
+WORKDIR /app
+COPY . .
+RUN gradle build -x test
+
+FROM --platform=arm64 openjdk:11.0.10-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar /app/ms10-demo1.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","ms10-demo1.jar"]
